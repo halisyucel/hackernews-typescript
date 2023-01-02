@@ -1,6 +1,6 @@
 import { FieldResolver } from "nexus";
 
-const createNewPost: FieldResolver<"Mutation", "createNewPost"> = async (
+const createNewLink: FieldResolver<"Mutation", "createNewLink"> = async (
   _parent,
   { description, url },
   { prisma }
@@ -13,4 +13,4 @@ const createNewPost: FieldResolver<"Mutation", "createNewPost"> = async (
   });
 };
 
-export default createNewPost;
+export default createNewLink;

@@ -5,13 +5,23 @@
 type Link {
   description: String!
   id: ID!
+  postedBy: User
   url: String!
 }
 
 type Mutation {
-  createNewPost(description: String!, url: String!): Link!
+  createNewLink(description: String!, url: String!): Link!
+  updateLink(description: String!, id: String!, postedById: String, url: String!): Link!
 }
 
 type Query {
   getFeed: [Link!]!
+}
+
+type User {
+  email: String!
+  id: ID!
+  links: [Link!]!
+  name: String!
+  password: String!
 }

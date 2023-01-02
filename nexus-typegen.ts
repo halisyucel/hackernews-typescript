@@ -35,6 +35,12 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  User: { // root type
+    email: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    password: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -51,13 +57,22 @@ export interface NexusGenFieldTypes {
   Link: { // field return type
     description: string; // String!
     id: string; // ID!
+    postedBy: NexusGenRootTypes['User'] | null; // User
     url: string; // String!
   }
   Mutation: { // field return type
-    createNewPost: NexusGenRootTypes['Link']; // Link!
+    createNewLink: NexusGenRootTypes['Link']; // Link!
+    updateLink: NexusGenRootTypes['Link']; // Link!
   }
   Query: { // field return type
     getFeed: NexusGenRootTypes['Link'][]; // [Link!]!
+  }
+  User: { // field return type
+    email: string; // String!
+    id: string; // ID!
+    links: NexusGenRootTypes['Link'][]; // [Link!]!
+    name: string; // String!
+    password: string; // String!
   }
 }
 
@@ -65,20 +80,35 @@ export interface NexusGenFieldTypeNames {
   Link: { // field return type name
     description: 'String'
     id: 'ID'
+    postedBy: 'User'
     url: 'String'
   }
   Mutation: { // field return type name
-    createNewPost: 'Link'
+    createNewLink: 'Link'
+    updateLink: 'Link'
   }
   Query: { // field return type name
     getFeed: 'Link'
+  }
+  User: { // field return type name
+    email: 'String'
+    id: 'ID'
+    links: 'Link'
+    name: 'String'
+    password: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createNewPost: { // args
+    createNewLink: { // args
       description: string; // String!
+      url: string; // String!
+    }
+    updateLink: { // args
+      description: string; // String!
+      id: string; // String!
+      postedById?: string | null; // String
       url: string; // String!
     }
   }

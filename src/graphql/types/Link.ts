@@ -1,6 +1,8 @@
-import { extendType, nonNull, objectType, stringArg } from "nexus";
-import createNewPost from "../mutations/createNewPost";
+import { extendType, nonNull, nullable, objectType, stringArg } from "nexus";
 import getFeed from "../resolvers/getFeed";
+import getPostedBy from "../resolvers/getPostedBy";
+import createNewLink from "../mutations/createNewLink";
+import updateLink from "../mutations/updateLink";
 
 export const Link = objectType({
   name: "Link",
@@ -8,6 +10,10 @@ export const Link = objectType({
     t.nonNull.id("id");
     t.nonNull.string("description");
     t.nonNull.string("url");
+    t.field("postedBy", {
+      type: "User",
+      resolve: getPostedBy,
+    });
   },
 });
 
@@ -24,13 +30,23 @@ export const LinkQuery = extendType({
 export const LinkMutation = extendType({
   type: "Mutation",
   definition(t) {
-    t.nonNull.field("createNewPost", {
+    t.nonNull.field("createNewLink", {
       type: "Link",
       args: {
         description: nonNull(stringArg()),
         url: nonNull(stringArg()),
       },
-      resolve: createNewPost,
+      resolve: createNewLink,
+    });
+    t.nonNull.field("updateLink", {
+      type: "Link",
+      args: {
+        id: nonNull(stringArg()),
+        description: nonNull(stringArg()),
+        url: nonNull(stringArg()),
+        postedById: stringArg(),
+      },
+      resolve: updateLink,
     });
   },
 });
