@@ -1,5 +1,5 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus';
-import createNewLink from '../mutations/createNewLink';
+import createLink from '../mutations/createLink';
 import updateLink from '../mutations/updateLink';
 import getFeed from '../resolvers/getFeed';
 import getPostedBy from '../resolvers/getPostedBy';
@@ -30,13 +30,13 @@ export const LinkQuery = extendType({
 export const LinkMutation = extendType({
   type: 'Mutation',
   definition(t) {
-    t.nonNull.field('createNewLink', {
+    t.nonNull.field('createLink', {
       type: 'Link',
       args: {
         description: nonNull(stringArg()),
         url: nonNull(stringArg()),
       },
-      resolve: createNewLink,
+      resolve: createLink,
     });
     t.nonNull.field('updateLink', {
       type: 'Link',

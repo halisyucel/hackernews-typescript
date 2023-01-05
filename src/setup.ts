@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv-flow';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-dotenv.config();
+dotenv.config({
+  node_env: process.env.NODE_ENV || 'development',
+});

@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { FieldResolver } from 'nexus';
-import { APP_SECRET } from '../../utils/auth';
+import InvalidCredentialsError from '../../lib/errors/auth/InvalidCredentials';
+import { AuthTokenPayload } from '../../utils/auth';
 
 const signIn: FieldResolver<'Mutation', 'signIn'> = async (
   _parent,
@@ -13,16 +14,19 @@ const signIn: FieldResolver<'Mutation', 'signIn'> = async (
   });
 
   if (!user) {
-    throw new Error('Invalid credentials');
+    throw new InvalidCredentialsError();
   }
 
   const passwordValid = await bcrypt.compare(password, user.password);
 
   if (!passwordValid) {
-    throw new Error('Invalid credentials');
+    throw new InvalidCredentialsError();
   }
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const token = jwt.sign(
+    { userId: user.id } as AuthTokenPayload,
+    process.env.APP_SECRET as string,
+  );
 
   return {
     token,

@@ -69,7 +69,7 @@ export interface NexusGenFieldTypes {
     url: string; // String!
   }
   Mutation: { // field return type
-    createNewLink: NexusGenRootTypes['Link']; // Link!
+    createLink: NexusGenRootTypes['Link']; // Link!
     signIn: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signUp: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     updateLink: NexusGenRootTypes['Link']; // Link!
@@ -98,7 +98,7 @@ export interface NexusGenFieldTypeNames {
     url: 'String'
   }
   Mutation: { // field return type name
-    createNewLink: 'Link'
+    createLink: 'Link'
     signIn: 'AuthPayload'
     signUp: 'AuthPayload'
     updateLink: 'Link'
@@ -117,7 +117,7 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    createNewLink: { // args
+    createLink: { // args
       description: string; // String!
       url: string; // String!
     }

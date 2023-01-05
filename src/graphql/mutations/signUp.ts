@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { FieldResolver } from 'nexus';
-import { APP_SECRET } from '../../utils/auth';
+import EmailAlreadyTakenError from '../../lib/errors/auth/EmailAlreadyTaken';
+import { AuthTokenPayload } from '../../utils/auth';
 
 // TODO: add yup validation
 
@@ -17,14 +18,17 @@ const signUp: FieldResolver<'Mutation', 'signUp'> = async (
   });
 
   if (isEmailTaken) {
-    throw new Error('Email already taken');
+    throw new EmailAlreadyTakenError();
   }
 
   const user = await prisma.user.create({
     data: { email, name, password: passwordHash },
   });
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const token = jwt.sign(
+    { userId: user.id } as AuthTokenPayload,
+    process.env.APP_SECRET as string,
+  );
 
   return {
     token,
