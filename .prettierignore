@@ -1,9 +1,1 @@
-.idea/
-node_modules/
-prisma/
-dist/
-.env
-.env.*
-nexus-typegen.ts
-schema.graphql
-yarn.lock
+dist

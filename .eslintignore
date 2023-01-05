@@ -1,5 +1,1 @@
-schema.graphql
-node_modules/
-.idea/
-prisma/
-nexus-typegen.ts
+dist
