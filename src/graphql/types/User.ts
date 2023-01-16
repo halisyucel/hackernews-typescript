@@ -1,5 +1,5 @@
 import { objectType } from 'nexus';
-import getLinks from '../resolvers/getLinks';
+import { links } from '../resolver/type/user';
 
 export const User = objectType({
   name: 'User',
@@ -7,10 +7,9 @@ export const User = objectType({
     t.nonNull.id('id');
     t.nonNull.string('name');
     t.nonNull.string('email');
-    t.nonNull.string('password');
     t.nonNull.list.nonNull.field('links', {
       type: 'Link',
-      resolve: getLinks,
+      resolve: links,
     });
   },
 });

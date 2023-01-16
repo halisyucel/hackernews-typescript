@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -12,11 +12,12 @@ generator client {
 
 model Link {
   id String @id @default(cuid())
-  createdAt DateTime @default(now())
   description String
   url String
-  postedBy User? @relation(fields: [postedById], references: [id])
-  postedById String?
+  postedBy User @relation(fields: [postedById], references: [id])
+  postedById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model User {
@@ -25,4 +26,6 @@ model User {
   email String @unique
   password String
   links Link[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }

@@ -1,15 +1,15 @@
 import { PrismaClient } from '@prisma/client';
-import { Request } from 'express';
-import { decodeAuthHeader } from './utils/auth';
+import { decodeAuthHeader } from './graphql/utils/auth';
 
-export const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 export interface Context {
   prisma: PrismaClient;
   userId?: string;
 }
 
-export const context = ({ req }: { req: Request }): Context => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createContext = ({ req }: { req: any }): Context => {
   const token =
     req && req.headers.authorization
       ? decodeAuthHeader(req.headers.authorization)

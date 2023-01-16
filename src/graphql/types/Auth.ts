@@ -1,14 +1,12 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus';
-import signIn from '../mutations/signIn';
-import signUp from '../mutations/signUp';
+import { signIn } from '../resolver/mutation/signIn';
+import { signUp } from '../resolver/mutation/signUp';
 
 export const AuthPayload = objectType({
   name: 'AuthPayload',
   definition(t) {
     t.nonNull.string('token');
-    t.nonNull.field('user', {
-      type: 'User',
-    });
+    t.nonNull.field('user', { type: 'User' });
   },
 });
 
@@ -18,9 +16,9 @@ export const AuthMutation = extendType({
     t.nonNull.field('signUp', {
       type: 'AuthPayload',
       args: {
+        name: nonNull(stringArg()),
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
-        name: nonNull(stringArg()),
       },
       resolve: signUp,
     });

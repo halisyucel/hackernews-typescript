@@ -1,5 +1,4 @@
-import * as dotenv from 'dotenv-flow';
+import * as dotenv from 'dotenv';
 
-dotenv.config({
-  node_env: process.env.NODE_ENV || 'development',
-});
+dotenv.config();
+dotenv.config({ path: '.env.local', override: true });

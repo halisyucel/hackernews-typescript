@@ -1,11 +1,9 @@
 import { FieldResolver } from 'nexus';
 
-const getFeed: FieldResolver<'Query', 'getFeed'> = (
+export const getFeed: FieldResolver<'Query', 'getFeed'> = (
   _parent,
-  _args,
+  _arg,
   { prisma },
 ) => {
   return prisma.link.findMany();
 };
-
-export default getFeed;
