@@ -4,13 +4,12 @@ import { AuthenticationFailedError } from '../../error/AuthenticationFailedError
 import { ValidationError } from '../../error/ValidationError';
 import { createLinkValidation } from '../../validation/createLinkValidation';
 
-export const createLink = ((_parent, args, { prisma, userId }) => {
+export const createLink: FieldResolver<'Mutation', 'createLink'> = (
+  _parent,
+  args,
+  { prisma, userId },
+) => {
   if (!userId) throw new AuthenticationFailedError();
-
-  const user = prisma.user.findUnique({
-    where: { id: userId },
-  });
-  if (!user) throw new AuthenticationFailedError();
 
   try {
     createLinkValidation.validateSync(args, { abortEarly: false });
@@ -30,4 +29,4 @@ export const createLink = ((_parent, args, { prisma, userId }) => {
 
     throw error;
   }
-}) as FieldResolver<'Mutation', 'createLink'>;
+};

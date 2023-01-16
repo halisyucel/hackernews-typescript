@@ -1,5 +1,6 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus';
 import { createLink } from '../resolver/mutation/createLink';
+import { deleteLink } from '../resolver/mutation/deleteLink';
 import { getFeed } from '../resolver/query/getFeed';
 import { postedBy } from '../resolver/type/link';
 
@@ -26,6 +27,13 @@ export const LinkMutation = extendType({
         description: nonNull(stringArg()),
       },
       resolve: createLink,
+    });
+    t.nonNull.field('deleteLink', {
+      type: 'Link',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: deleteLink,
     });
   },
 });
