@@ -12,7 +12,7 @@ export interface Context {
 export const createContext = ({ req }: { req: any }): Context => {
   const token =
     req && req.headers.authorization
-      ? decodeAuthHeader(req.headers.authorization)
+      ? decodeAuthHeader(req.headers.authorization, prisma)
       : null;
 
   return {

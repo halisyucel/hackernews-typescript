@@ -13,4 +13,9 @@ export const schema = makeSchema({
     module: join(__dirname, './context.ts'),
     export: 'Context',
   },
+  features: {
+    abstractTypeStrategies: {
+      resolveType: false,
+    },
+  },
 });

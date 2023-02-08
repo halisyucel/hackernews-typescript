@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  ReactionType: "ANGRY" | "HAHA" | "LIKE" | "LOVE" | "SAD" | "WOW"
 }
 
 export interface NexusGenScalars {
@@ -32,13 +33,28 @@ export interface NexusGenObjects {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Comment: { // root type
+    id: string; // ID!
+    link: NexusGenRootTypes['Link']; // Link!
+    reactions: Array<NexusGenRootTypes['Reaction'] | null>; // [Reaction]!
+    text: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Link: { // root type
     description: string; // String!
     id: string; // ID!
+    reactions: Array<NexusGenRootTypes['Reaction'] | null>; // [Reaction]!
     url: string; // String!
   }
   Mutation: {};
   Query: {};
+  Reaction: { // root type
+    comment?: NexusGenRootTypes['Comment'] | null; // Comment
+    id: string; // ID!
+    link?: NexusGenRootTypes['Link'] | null; // Link
+    type: NexusGenEnums['ReactionType']; // ReactionType!
+    user: NexusGenRootTypes['User']; // User!
+  }
   User: { // root type
     email: string; // String!
     id: string; // ID!
@@ -47,40 +63,60 @@ export interface NexusGenObjects {
 }
 
 export interface NexusGenInterfaces {
+  Reactable: NexusGenRootTypes['Comment'] | NexusGenRootTypes['Link'];
 }
 
 export interface NexusGenUnions {
 }
 
-export type NexusGenRootTypes = NexusGenObjects
+export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Comment: { // field return type
+    id: string; // ID!
+    link: NexusGenRootTypes['Link']; // Link!
+    reactions: Array<NexusGenRootTypes['Reaction'] | null>; // [Reaction]!
+    text: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Link: { // field return type
     description: string; // String!
     id: string; // ID!
     postedBy: NexusGenRootTypes['User']; // User!
+    reactions: Array<NexusGenRootTypes['Reaction'] | null>; // [Reaction]!
     url: string; // String!
   }
   Mutation: { // field return type
     createLink: NexusGenRootTypes['Link']; // Link!
     deleteLink: NexusGenRootTypes['Link']; // Link!
+    reactLink: NexusGenRootTypes['Link']; // Link!
     signIn: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     signUp: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
     getFeed: NexusGenRootTypes['Link'][]; // [Link!]!
   }
+  Reaction: { // field return type
+    comment: NexusGenRootTypes['Comment'] | null; // Comment
+    id: string; // ID!
+    link: NexusGenRootTypes['Link'] | null; // Link
+    type: NexusGenEnums['ReactionType']; // ReactionType!
+    user: NexusGenRootTypes['User']; // User!
+  }
   User: { // field return type
     email: string; // String!
     id: string; // ID!
     links: NexusGenRootTypes['Link'][]; // [Link!]!
     name: string; // String!
+  }
+  Reactable: { // field return type
+    reactions: Array<NexusGenRootTypes['Reaction'] | null>; // [Reaction]!
   }
 }
 
@@ -89,26 +125,45 @@ export interface NexusGenFieldTypeNames {
     token: 'String'
     user: 'User'
   }
+  Comment: { // field return type name
+    id: 'ID'
+    link: 'Link'
+    reactions: 'Reaction'
+    text: 'String'
+    user: 'User'
+  }
   Link: { // field return type name
     description: 'String'
     id: 'ID'
     postedBy: 'User'
+    reactions: 'Reaction'
     url: 'String'
   }
   Mutation: { // field return type name
     createLink: 'Link'
     deleteLink: 'Link'
+    reactLink: 'Link'
     signIn: 'AuthPayload'
     signUp: 'AuthPayload'
   }
   Query: { // field return type name
     getFeed: 'Link'
   }
+  Reaction: { // field return type name
+    comment: 'Comment'
+    id: 'ID'
+    link: 'Link'
+    type: 'ReactionType'
+    user: 'User'
+  }
   User: { // field return type name
     email: 'String'
     id: 'ID'
     links: 'Link'
     name: 'String'
+  }
+  Reactable: { // field return type name
+    reactions: 'Reaction'
   }
 }
 
@@ -120,6 +175,10 @@ export interface NexusGenArgTypes {
     }
     deleteLink: { // args
       id: string; // String!
+    }
+    reactLink: { // args
+      id: string; // String!
+      reaction: NexusGenEnums['ReactionType']; // ReactionType!
     }
     signIn: { // args
       email: string; // String!
@@ -134,18 +193,21 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
+  Reactable: "Comment" | "Link"
 }
 
 export interface NexusGenTypeInterfaces {
+  Comment: "Reactable"
+  Link: "Reactable"
 }
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
-export type NexusGenInterfaceNames = never;
+export type NexusGenInterfaceNames = keyof NexusGenInterfaces;
 
 export type NexusGenScalarNames = keyof NexusGenScalars;
 
@@ -157,9 +219,9 @@ export type NexusGenAbstractsUsingStrategyResolveType = never;
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {
-    isTypeOf: false
-    resolveType: true
+    resolveType: false
     __typename: false
+    isTypeOf: false
   }
 }
 

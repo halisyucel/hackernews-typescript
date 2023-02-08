@@ -17,6 +17,9 @@ export const createLink: FieldResolver<'Mutation', 'createLink'> = (
     return prisma.link.create({
       data: {
         ...args,
+        reactions: {
+          unset: true,
+        },
         postedBy: {
           connect: { id: userId },
         },

@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Link {
+  id String @id @default(cuid())
+  description String
+  url String
+  postedBy User @relation(fields: [postedById], references: [id])
+  postedById String
+  reactions Reaction[]
+  saves Save[]
+  comments Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model User {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  password String
+  links Link[]
+  saves Save[]
+  comments Comment[]
+  reactions Reaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+enum ReactionType {
+  LIKE
+  LOVE
+  HAHA
+  WOW
+  SAD
+  ANGRY
+}
+
+model Reaction {
+  id String @id @default(cuid())
+  type ReactionType
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  link Link? @relation(fields: [linkId], references: [id])
+  linkId String?
+  comment Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Save {
+  id String @id @default(cuid())
+  link Link @relation(fields: [linkId], references: [id])
+  linkId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Comment {
+  id String @id @default(cuid())
+  text String
+  link Link @relation(fields: [linkId], references: [id])
+  linkId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  reactions Reaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

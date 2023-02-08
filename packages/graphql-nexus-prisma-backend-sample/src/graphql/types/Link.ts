@@ -1,8 +1,11 @@
 import { extendType, nonNull, objectType, stringArg } from 'nexus';
 import { createLink } from '../resolver/mutation/createLink';
 import { deleteLink } from '../resolver/mutation/deleteLink';
+import { reactLink } from '../resolver/mutation/reactLink';
 import { getFeed } from '../resolver/query/getFeed';
 import { postedBy } from '../resolver/type/link';
+import { Reactable } from './Reactable';
+import { ReactionType } from './Reaction';
 
 export const Link = objectType({
   name: 'Link',
@@ -14,6 +17,7 @@ export const Link = objectType({
       type: 'User',
       resolve: postedBy,
     });
+    t.implements(Reactable);
   },
 });
 
@@ -34,6 +38,14 @@ export const LinkMutation = extendType({
         id: nonNull(stringArg()),
       },
       resolve: deleteLink,
+    });
+    t.nonNull.field('reactLink', {
+      type: 'Link',
+      args: {
+        id: nonNull(stringArg()),
+        reaction: nonNull(ReactionType),
+      },
+      resolve: reactLink,
     });
   },
 });
