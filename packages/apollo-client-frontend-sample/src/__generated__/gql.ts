@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query FeedQuery {\n    feed {\n      id\n      links {\n        id\n        createdAt\n        url\n        description\n      }\n    }\n  }\n": types.FeedQueryDocument,
+    "\n    mutation PostMutation(\n        $description: String!\n        $url: String!\n    ) {\n        post(description: $description, url: $url) {\n            id\n            createdAt\n            url\n            description\n        }\n    }\n": types.PostMutationDocument,
 };
 
 /**
@@ -34,6 +35,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query FeedQuery {\n    feed {\n      id\n      links {\n        id\n        createdAt\n        url\n        description\n      }\n    }\n  }\n"): (typeof documents)["\n  query FeedQuery {\n    feed {\n      id\n      links {\n        id\n        createdAt\n        url\n        description\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation PostMutation(\n        $description: String!\n        $url: String!\n    ) {\n        post(description: $description, url: $url) {\n            id\n            createdAt\n            url\n            description\n        }\n    }\n"): (typeof documents)["\n    mutation PostMutation(\n        $description: String!\n        $url: String!\n    ) {\n        post(description: $description, url: $url) {\n            id\n            createdAt\n            url\n            description\n        }\n    }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

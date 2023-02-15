@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { gql } from '../../__generated__/gql'
+import { gql } from '../../__generated__'
+import Link from "../Link";
 
 const FEED_QUERY = gql(`
   query FeedQuery {
@@ -16,15 +17,22 @@ const FEED_QUERY = gql(`
 `);
 
 export default function Feed() {
-    const { loading, data, error } = useQuery(FEED_QUERY);
-    
-    if (loading) return <div>Loading...</div>;
+  const { loading, data, error } = useQuery(FEED_QUERY);
 
-    if (error) return <div>Error</div>;
+  if (loading) return <div>Loading...</div>;
 
-    return (
-        <div>
-            {JSON.stringify(data)}
-        </div>
-    );
+  if (error) return <div>Error</div>;
+
+  return (
+    <div>
+      {data?.feed.links.map((link) => (
+        <Link
+          key={link.id}
+          createdAt={link.createdAt}
+          description={link.description}
+          url={link.url}
+        />
+      ))}
+    </div>
+  );
 }
